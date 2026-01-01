@@ -52,13 +52,13 @@
 </head>
 <body>
 
-<h1>Software Revenue</h1>
+<h1>ERP Software Revenue Planner</h1>
 
 <div class="card">
     <h2>Quick Revenue Calculator</h2>
 
     <label>Unit Price per Company</label>
-    <input type="range" id="unitPrice" min="10000" max="200000" step="10000" value="30000">
+    <input type="range" id="unitPrice" min="10000" max="1000000" step="10000" value="30000">
     <span id="unitPriceText"></span>
 
     <label>Number of Companies</label>
@@ -80,6 +80,14 @@
     <select id="maxUnit">
         <option value="100000">1 Lakh</option>
         <option value="200000">2 Lakhs</option>
+        <option value="300000">3 Lakhs</option>
+        <option value="400000">4 Lakhs</option>
+        <option value="500000">5 Lakhs</option>
+        <option value="600000">6 Lakhs</option>
+        <option value="700000">7 Lakhs</option>
+        <option value="800000">8 Lakhs</option>
+        <option value="900000">9 Lakhs</option>
+        <option value="1000000">10 Lakhs</option>
     </select>
 
     <button onclick="generateTable()" style="margin-top:12px;">
@@ -121,13 +129,9 @@
         const count = parseInt(companies.value);
         const total = price * count;
 
-        document.getElementById("unitPriceText").innerText =
-            formatUnitPrice(price);
-
+        document.getElementById("unitPriceText").innerText = formatUnitPrice(price);
         document.getElementById("companiesText").innerText = count;
-
-        document.getElementById("revenueText").innerText =
-            formatRevenue(total);
+        document.getElementById("revenueText").innerText = formatRevenue(total);
     }
 
     unitPrice.oninput = updateCalculator;
