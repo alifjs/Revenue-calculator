@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Software Revenue</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f4f6f8;
+        padding: 20px;
+    }
+    h1, h2 {
+        color: #2c3e50;
+    }
+    .card {
+        background: #ffffff;
+        padding: 18px;
+        margin-bottom: 22px;
+        border-radius: 8px;
+        max-width: 680px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    label {
+        font-weight: bold;
+        margin-top: 12px;
+        display: block;
+    }
+    input[type="range"], input[type="number"], select {
+        width: 100%;
+        margin-top: 6px;
+    }
+    .result {
+        margin-top: 15px;
+        font-size: 18px;
+        color: #16a085;
+        font-weight: bold;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 12px;
+    }
+    th, td {
+        border: 1px solid #ddd;
+        padding: 7px;
+        text-align: center;
+    }
+    th {
+        background: #ecf0f1;
+    }
+</style>
+</head>
+<body>
+
+<h1>Software Revenue</h1>
+
+<div class="card">
+    <h2>Quick Revenue Calculator</h2>
+
+    <label>Unit Price per Company</label>
+    <input type="range" id="unitPrice" min="10000" max="200000" step="10000" value="30000">
+    <span id="unitPriceText"></span>
+
+    <label>Number of Companies</label>
+    <input type="range" id="companies" min="1" max="1000" value="10">
+    <span id="companiesText"></span>
+
+    <div class="result">
+        Total Revenue: <span id="revenueText"></span>
+    </div>
+</div>
+
+<div class="card">
+    <h2>Target Income Planner</h2>
+
+    <label>Target Income (Lakhs)</label>
+    <input type="number" id="targetLakhs" value="100" step="10">
+
+    <label>Maximum Unit Price</label>
+    <select id="maxUnit">
+        <option value="100000">1 Lakh</option>
+        <option value="200000">2 Lakhs</option>
+    </select>
+
+    <button onclick="generateTable()" style="margin-top:12px;">
+        Show Pricing Options
+    </button>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Unit Price</th>
+                <th>Companies Needed</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+    </table>
+</div>
+
+<script>
+    const unitPrice = document.getElementById("unitPrice");
+    const companies = document.getElementById("companies");
+
+    function formatUnitPrice(taka) {
+        if (taka < 100000) {
+            return (taka / 1000) + "k";
+        }
+        const lakh = taka / 100000;
+        return Number.isInteger(lakh) ? lakh + " Lakh" : lakh.toFixed(1) + " Lakh";
+    }
+
+    function formatRevenue(taka) {
+        if (taka >= 10000000) {
+            return (taka / 10000000).toFixed(2) + " Crore";
+        }
+        return (taka / 100000).toFixed(2) + " Lakh";
+    }
+
+    function updateCalculator() {
+        const price = parseInt(unitPrice.value);
+        const count = parseInt(companies.value);
+        const total = price * count;
+
+        document.getElementById("unitPriceText").innerText =
+            formatUnitPrice(price);
+
+        document.getElementById("companiesText").innerText = count;
+
+        document.getElementById("revenueText").innerText =
+            formatRevenue(total);
+    }
+
+    unitPrice.oninput = updateCalculator;
+    companies.oninput = updateCalculator;
+    updateCalculator();
+
+    function generateTable() {
+        const targetLakhs = parseInt(document.getElementById("targetLakhs").value);
+        const target = targetLakhs * 100000;
+        const maxUnit = parseInt(document.getElementById("maxUnit").value);
+        const body = document.getElementById("tableBody");
+
+        body.innerHTML = "";
+
+        for (let price = 10000; price <= maxUnit; price += 10000) {
+            const companiesNeeded = target / price;
+            if (Number.isInteger(companiesNeeded) && companiesNeeded > 0) {
+                body.innerHTML += `
+                    <tr>
+                        <td>${formatUnitPrice(price)}</td>
+                        <td>${companiesNeeded}</td>
+                    </tr>`;
+            }
+        }
+    }
+</script>
+
+</body>
+</html>
